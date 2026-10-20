@@ -9,6 +9,10 @@ GitHub Actions downloads the public upstream YAML for each provider. For an MRS
 provider it uses the same-name YAML published by that upstream. It converts the
 payload to Loon rules and publishes all lists in one commit only after every
 provider succeeds. A failed build leaves the previous lists available.
+There is no intermediate ruleset mirror. The published `.list` files correspond
+to the upstream YAML fetched for that successful build; the separate MRS binaries
+are not decoded or compared by this builder. The current configuration has 234
+providers and 233 `RULE-SET` references; one provider is not used for routing.
 
 Two current upstream exceptions are explicit in the output: `R-ads-add-ip` has
 an empty YAML payload, and `R-fakeipfilter` contains the invalid domain entry
