@@ -1,0 +1,51 @@
+name: Update Loon lists
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out rule repository
+        uses: actions/checkout@v4
+
+      - name: Check out public Clash configuration
+        uses: actions/checkout@v4
+        with:
+          repository: yzzhaophys/clash-config-public
+          ref: main
+          path: source-config
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build lists
+        run: python build.py --home source-config/home.yaml --output lists
+
+      - name: Publish complete update
+        run: |
+          git add lists
+          if git diff --cached --quiet; then
+            echo 'No rule changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update Loon rule lists'
+          git push
