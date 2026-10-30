@@ -11,13 +11,15 @@ payload to Loon rules and publishes all lists in one commit only after every
 provider succeeds. A failed build leaves the previous lists available.
 There is no intermediate ruleset mirror. The published `.list` files correspond
 to the upstream YAML fetched for that successful build; the separate MRS binaries
-are not decoded or compared by this builder. The current configuration has 234
-providers and 233 `RULE-SET` references; one provider is not used for routing.
+are not decoded or compared by this builder. The current configuration has 238
+providers and 237 `RULE-SET` references; one provider is not used for routing.
 
-Two current upstream exceptions are explicit in the output: `R-ads-add-ip` has
-an empty YAML payload, and `R-fakeipfilter` contains the invalid domain entry
-`+.Mijia Cloud`. Its list comments out that one entry. Any other unsupported
-entry fails the build.
+Current upstream exceptions are explicit in the output: `R-ads-add-ip` has an
+empty YAML payload; `R-fakeipfilter` contains the invalid domain entry
+`+.Mijia Cloud`; and `R-bankHK` / `R-bankUS` contain 13 wildcard patterns that
+cannot be represented in Loon without changing their match scope. The lists
+comment out these known entries and retain the other rules. Any other
+unsupported entry fails the build.
 
 Run locally:
 

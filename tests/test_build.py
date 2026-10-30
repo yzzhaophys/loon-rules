@@ -50,6 +50,44 @@ rules:
             convert_provider({"behavior": "domain"}, "payload: ['+.Mijia Cloud']", "R-fakeipfilter"),
         )
 
+    def test_bank_wildcards_are_skipped_but_other_entries_are_kept(self):
+        bank_patterns = {
+            "R-bankHK": [
+                "+.vam-hk.*.vv1865.com",
+                "+.standchartbank.*.*.*",
+                "+.standchartbank.*.*",
+            ],
+            "R-bankUS": [
+                "+.vam-us.*.vv1865.com",
+                "+.bankofamerica.*",
+                "+.bankofamerica.*.*",
+                "+.bankofamerica.*.*.*",
+                "+.bankofamerica1.*",
+                "+.bankofamerica1.*.*",
+                "+.bankofamerica1.*.*.*",
+                "+.eastwestbank.*",
+                "+.eastwestbank.*.*",
+                "+.eastwestbank.*.*.*",
+            ],
+        }
+        for name, patterns in bank_patterns.items():
+            payload = ["valid.example", *patterns]
+            source = "payload:\n" + "".join(f"  - '{value}'\n" for value in payload)
+            output = convert_provider({"behavior": "domain"}, source, name).splitlines()
+            self.assertEqual(output[0], "DOMAIN,valid.example")
+            self.assertEqual(
+                output[1:],
+                [f"# Skipped unsupported wildcard pattern: {value}" for value in patterns],
+            )
+
+    def test_unknown_wildcard_patterns_still_fail(self):
+        with self.assertRaisesRegex(ValueError, "invalid domain entry"):
+            convert_provider(
+                {"behavior": "domain"},
+                "payload: ['+.example.*.com']",
+                "R-other",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,22 @@ COMMENTED_PROVIDER = re.compile(r"^(\s*)#\s*([\w.!@-]+):\s*(\{.*)$")
 COMMENTED_RULE = re.compile(r"^(\s*)#\s*(-\s*RULE-SET,.*)$")
 DOMAIN_NAME = re.compile(r"^[A-Za-z0-9_\u0080-\uffff-]+(?:\.[A-Za-z0-9_\u0080-\uffff-]+)*$")
 MAX_SOURCE_BYTES = 16 * 1024 * 1024
+SKIPPED_UPSTREAM_ITEMS = {
+    ("R-fakeipfilter", "+.Mijia Cloud"): "invalid upstream item",
+    ("R-bankHK", "+.vam-hk.*.vv1865.com"): "unsupported wildcard pattern",
+    ("R-bankHK", "+.standchartbank.*.*.*"): "unsupported wildcard pattern",
+    ("R-bankHK", "+.standchartbank.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.vam-us.*.vv1865.com"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica.*.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica1.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica1.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.bankofamerica1.*.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.eastwestbank.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.eastwestbank.*.*"): "unsupported wildcard pattern",
+    ("R-bankUS", "+.eastwestbank.*.*.*"): "unsupported wildcard pattern",
+}
 
 
 def definitions_from_home(content):
@@ -135,9 +151,10 @@ def convert_provider(provider, source, name=None):
     result = []
     seen = set()
     for value in payload:
-        if name == "R-fakeipfilter" and value == "+.Mijia Cloud":
-            # This public upstream item contains a space and is not a domain.
-            result.append("# Skipped invalid upstream item: +.Mijia Cloud")
+        skip_reason = SKIPPED_UPSTREAM_ITEMS.get((name, value)) if isinstance(value, str) else None
+        if skip_reason:
+            # Keep narrow exceptions visible; any unlisted unsupported item still fails below.
+            result.append(f"# Skipped {skip_reason}: {value}")
             continue
         rule = convert(value)
         if rule not in seen:
