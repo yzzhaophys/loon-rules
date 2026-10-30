@@ -1,0 +1,23 @@
+DOMAIN-SUFFIX,hsbc.com.hk
+DOMAIN,hk.hsbc.com
+DOMAIN-SUFFIX,hk.hsbc.com
+# Skipped unsupported wildcard pattern: +.vam-hk.*.vv1865.com
+DOMAIN,mobile.eum-appdynamics.com
+DOMAIN,accdn.lpsnmedia.net
+DOMAIN,collect-ap-east-1.tealiumiq.com
+DOMAIN-SUFFIX,sc.com.hk
+DOMAIN-SUFFIX,sc.com
+# Skipped unsupported wildcard pattern: +.standchartbank.*.*.*
+# Skipped unsupported wildcard pattern: +.standchartbank.*.*
+DOMAIN,yvn1g4-cdn-settings.appsflyersdk.com
+DOMAIN,yvn1g4-launches.appsflyersdk.com
+DOMAIN-SUFFIX,bochk.com
+DOMAIN-SUFFIX,ocbcwhhk.com
+DOMAIN-SUFFIX,hangseng.com
+DOMAIN-SUFFIX,cmbwinglungbank.com
+DOMAIN-SUFFIX,cncbinternational.com
+DOMAIN-SUFFIX,citibank.com.hk
+DOMAIN-SUFFIX,dbs.com.hk
+DOMAIN-SUFFIX,ncb.com.hk
+DOMAIN-SUFFIX,za.group
+DOMAIN-SUFFIX,cdn.zaticdn.com

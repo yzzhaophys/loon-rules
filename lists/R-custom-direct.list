@@ -1,10 +1,1 @@
-DOMAIN-SUFFIX,schwab.com
-DOMAIN-SUFFIX,schwab.com.hk
-DOMAIN-SUFFIX,schwab.com.sg
-DOMAIN-SUFFIX,schwabcdn.com
-DOMAIN-SUFFIX,hsbc.com
-DOMAIN-SUFFIX,hsbc.com.hk
-DOMAIN-SUFFIX,hsbc.com.cn
-DOMAIN-SUFFIX,hsbc.com.mo
-DOMAIN-SUFFIX,hsbc.com.sg
-DOMAIN-SUFFIX,hsbc.co.uk
+# Upstream payload is empty.
